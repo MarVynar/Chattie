@@ -3,6 +3,7 @@
 
 //#include "NetCore.h"
 #include "ProfileDatabase.h"
+#include "ChatHistory.h"
 //#include "RequestManager.h"
 
 class IServerCore
@@ -17,7 +18,7 @@ class IServerCore
 	public:
 		
 	//	IServerCore(IRequestManager* requestManager);
-		//IServerCore();
+		IServerCore();
 
 		virtual bool checkNickName(std::string nickName) =0;
 		virtual void addNickName(std::string nickName) =0;
@@ -32,7 +33,9 @@ class IServerCore
 	protected:
 		
 		
-		std::string chatHistoryPath ="ChatHistory.dat";
+		//std::string chatHistoryPath ="ChatHistory.dat";
+		ProfileDatabase* profileDataBase;
+		ChatHistory* chatHistory;
 };
 
 #endif

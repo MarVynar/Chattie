@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChatHistory.h" />
     <ClInclude Include="IRequestManager.h" />
     <ClInclude Include="IServerCore.h" />
     <ClInclude Include="NetCore.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="ServerCore.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChatHistory.cpp" />
     <ClCompile Include="IRequestManager.cpp" />
     <ClCompile Include="IServerCore.cpp" />
     <ClCompile Include="main.cpp" />

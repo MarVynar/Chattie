@@ -1,6 +1,6 @@
 #include "ServerCore.h"
 
-//ServerCore::ServerCore():IServerCore
+//ServerCore::ServerCore():IServerCore()
 //{
 //}
 
@@ -10,11 +10,12 @@ ServerCore::~ServerCore()
 
 
 bool ServerCore::checkNickName(std::string nickName){
-	return true;
+	return profileDataBase->findProfile(nickName);
 	
 }
 void ServerCore::addNickName(std::string nickName){
 	
+	profileDataBase->addProfile(nickName);
 }
 		
 void ServerCore::saveChatHistory(){
