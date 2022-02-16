@@ -1,5 +1,5 @@
 #include <iostream>
-//#include "ChatApplication.h"
+#include "ServerApplication.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 	
-//	ChatApplication chattie;
+	ServerApplication chattie;
 	
 	
 	return 0;

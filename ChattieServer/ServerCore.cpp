@@ -13,7 +13,8 @@ bool ServerCore::checkNickName(std::string nickName){
 	return profileDataBase->findProfile(nickName);
 	
 }
-void ServerCore::addNickName(std::string nickName){
+void ServerCore::addNickName(std::string nickName) // bool, success
+{
 	
 	profileDataBase->addProfile(nickName);
 }

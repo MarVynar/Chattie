@@ -60,8 +60,8 @@ public:
 
 	void serverCycle();
 
-	int sendReply(requestType rType, std::string requestText);
-
+	//int sendReply(requestType rType, std::string requestText);
+	int sendReply(std::string requestText);
 
 	std::string receiveRequest();
 

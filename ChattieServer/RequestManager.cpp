@@ -26,19 +26,30 @@ void RequestManager::sendReply(requestType type, std::string requestText){
 }
 
 
-bool RequestManager::processReceivedRequest(std::string replyText){
+std::string RequestManager::processReceivedRequest(std::string replyText){
+
+	std::string request = replyText.substr(1);
 
 	switch ((requestType) (replyText[0]-48)) {
-			
+				
 	case nicknameChecking: 
-		return (replyText == "Yes") ? true : false; 
-		//return false;
+		
+		return (replyText[0] +(serverCore->checkNickName(request)) ? "Yes" : "No");
+		
 		break;
-	case  sendMessage: // adding to history
-	// and sending
+	case  sendMessage: 
+
+		serverCore->addMessage(request);
+		//return replyText[0] +  request;
+		return replyText;
+	
 				break;
 	case nicknameAdding: // adding to profile Database
 		
+		serverCore->addNickName(request);
+		
+		//adding returns success or fail
+		return replyText[0] + "Added"; 
 		break;
 			
 	default : break;
@@ -46,10 +57,14 @@ bool RequestManager::processReceivedRequest(std::string replyText){
 		
 		}
 
-	return true; 
+	return "0"; 
 
 }
 
+
+RequestManager::RequestManager(IServerCore * serverCore) : IRequestManager(serverCore)
+{
+}
 
 RequestManager::~RequestManager(){
 	

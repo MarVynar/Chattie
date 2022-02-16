@@ -3,8 +3,12 @@
 
 NetCore::NetCore(IServerCore* serverCore)
 {
+	///////
+	//char chl;
+	//std::cin >> chl;
+	/////
 	this->serverCore = serverCore ;
-	requestManager = new RequestManager();
+	requestManager = new RequestManager(serverCore);
  runAsServer(); 
 
 }
@@ -20,7 +24,7 @@ NetCore::~NetCore()
 
 int NetCore::runAsServer()
 {
-
+	std::cout << "Running Server" << std::endl;
 
 
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -84,13 +88,15 @@ int NetCore::runAsServer()
 
 	int iSendResult = 0;
 
+	serverCycle();
 	
 	return 0;
 }
 
 
 
-int NetCore::sendReply(requestType rType, std::string requestText)
+//int NetCore::sendReply(requestType rType, std::string requestText)
+int NetCore::sendReply(std::string requestText)
 {
 	int iSendResult = 0;
 
@@ -99,9 +105,9 @@ int NetCore::sendReply(requestType rType, std::string requestText)
 		/*char* replyMessage = new char[2];
 		replyMessage[0] = reply;
 		replyMessage[1] = '\0';*/
-		std::string reply;
-		std::cout << "Sending reply " <<reply.c_str() << "." << std::endl;
-		iSendResult = send(ConnectSocket, reply.c_str(), reply.length()+1, 0);
+		//std::string reply;
+		std::cout << "Sending reply " << requestText.c_str() << "." << std::endl;
+		iSendResult = send(ConnectSocket, requestText.c_str(), requestText.length()+1, 0);
 
 		if (iSendResult == SOCKET_ERROR) {
 			printf("send failed with error: %d\n", WSAGetLastError());
@@ -122,18 +128,19 @@ std::string  NetCore::receiveRequest()
 
 	std::cout << "RecvBuf" << recvbuf << "!" << std::endl;
 	
-	requestManager->processReceivedRequest((recvbuf));
+	return requestManager->processReceivedRequest((recvbuf));
 	//return recvbuf[0];
-	return recvbuf;
+	//return recvbuf;
 }
 
 void NetCore::serverCycle(){
 	
-	
+	std::cout << "Runninf Cycle" << std::endl;
 	//threads
 	while(true){
 		
-		receiveRequest();
+		sendReply(receiveRequest());
+		//process request 
 		
 		
 		
