@@ -15,7 +15,7 @@ bool MainMenu::showMenu(){
 	
 	std::string nickName;
 
-	bool requestResult = true;
+	bool requestResult = false;
 	do {
 		try {
 			std::cout << "Please enter your nickname\n";
@@ -25,6 +25,7 @@ bool MainMenu::showMenu(){
 		catch (...) { std::cout << "Wrong input\n"; continue; }
 
 		requestResult = requestManager->makeRequest(nicknameChecking, nickName);
+		std::cout <<"Req result" <<requestResult << std::endl;
 		if (!requestResult) {
 
 			std::cout << "Would you like to save profile?Y/N";
@@ -37,8 +38,10 @@ bool MainMenu::showMenu(){
 	//if(requestManager->makeRequest(nicknameChecking, nickName )){}
 	//else {}
 		
-	if (false) return false;
-
+	//if (false) return false;
+	std::cout << "menu Ends \n";
+	char ch;
+	std::cin >> ch;
 	return true;
 	
 }

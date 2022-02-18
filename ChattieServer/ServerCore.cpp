@@ -1,4 +1,5 @@
 #include "ServerCore.h"
+#include <iostream>
 
 //ServerCore::ServerCore():IServerCore()
 //{
@@ -10,7 +11,11 @@ ServerCore::~ServerCore()
 
 
 bool ServerCore::checkNickName(std::string nickName){
-	return profileDataBase->findProfile(nickName);
+	std::cout <<"Looking for "<<nickName << std::endl;
+	//return profileDataBase->findProfile(nickName);
+	bool result = profileDataBase->findProfile(nickName);
+	std::cout << "Search res " << result << std::endl;
+	return result;
 	
 }
 void ServerCore::addNickName(std::string nickName) // bool, success

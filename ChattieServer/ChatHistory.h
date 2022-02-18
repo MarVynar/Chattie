@@ -19,7 +19,7 @@ public:
 	ChatHistory();
 	~ChatHistory();
 
-	void addMessage(std::string nickName);
+	void addMessage(std::string nickName, std::string message);
 	//getHistory();
 
 

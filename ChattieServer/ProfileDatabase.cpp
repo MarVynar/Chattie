@@ -15,13 +15,13 @@ void ProfileDatabase::addProfile(std::string nickName){
 					
 			char* temp = new char[(nickName).length() + 1];
 			//strcpy(temp, (nickName).c_str());
-			strcpy_s(temp, (nickName).length(), (nickName).c_str()); //+1?
+			strcpy_s(temp, (nickName).length()+1, (nickName).c_str()); //+1?
 			dataFile << temp << '\n';
 			
 		
 		
 	//	dataFile.write((char*)&this, sizeof(ProfileDatabase)); 
-		
+			delete[] temp; 
 	}
 	else{
 		
@@ -37,24 +37,29 @@ bool ProfileDatabase::findProfile(std::string nickName){
 		ifstream dataFile;
 
 	dataFile.open(profileDatabasePath);
+
+	//cout << "Looking for " << nickName << endl;
+	printf("Looking for  %s", nickName);
 	
 	if(dataFile.is_open()){
 	
 		//dataFile.read((char*)this, sizeof(ProfileDatabase)); 
-		char ch;
+		/*(char ch;
 		while (dataFile.get(ch)) {
 
 			string temp;
 			while (ch != '\n') {
 				temp += ch;
-
+				
 			}
-
-			///cout<<temp<<endl; //
+			printf("Temp %s", temp);
+			//cout << "Temp "<< temp << endl;
+			//cout<<temp<<endl; //
 			if (temp == nickName) return true;
 
 		}
-		return false;
+		return false;*/
+		return true;
 	}
 	else{
 		

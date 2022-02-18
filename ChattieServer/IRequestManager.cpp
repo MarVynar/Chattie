@@ -1,9 +1,11 @@
 #include "IRequestManager.h"
 
 
-IRequestManager::IRequestManager()
+IRequestManager::IRequestManager(IServerCore* serverCore)
 {
 	//netCore = new NetCore();
+	this->serverCore = serverCore;
+
 }
 
 IRequestManager::~IRequestManager(){

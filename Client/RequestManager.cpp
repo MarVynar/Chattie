@@ -13,9 +13,10 @@ std::string requestToSend;
 //
 //
 //}
-
+std::cout << "request text " << requestText << std::endl; // to delete reqToSend
+requestToSend = requestText;
 sendRequest(type, requestToSend);
-if (type == nicknameChecking)return processReply(type, netCore->receiveReply());
+if (type == nicknameChecking) return processReply(netCore->receiveReply()); //waiting for needed reply
 else return true;
 }
 
@@ -26,12 +27,15 @@ void RequestManager::sendRequest(requestType type, std::string requestText){
 }
 
 
-bool RequestManager::processReply(requestType type, std::string replyText){
+bool RequestManager::processReply( std::string replyText){
 
-	switch (type) {
+	//switch (type) {
+	//std::string request = replyText.substr(1);
+
+	switch ((requestType)(replyText[0] - 48)) {
 			
 	case nicknameChecking: 
-		return (replyText == "Yes") ? true : false; 
+		return (replyText == "0Yes") ? true : false;  // fix Hardcode
 		//return false;
 		break;
 			case  sendingMessage:

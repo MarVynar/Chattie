@@ -106,6 +106,7 @@ int NetCore::sendReply(std::string requestText)
 		replyMessage[0] = reply;
 		replyMessage[1] = '\0';*/
 		//std::string reply;
+		std::cout << "Reply Text" << requestText<< std::endl;
 		std::cout << "Sending reply " << requestText.c_str() << "." << std::endl;
 		iSendResult = send(ConnectSocket, requestText.c_str(), requestText.length()+1, 0);
 
@@ -137,14 +138,27 @@ void NetCore::serverCycle(){
 	
 	std::cout << "Runninf Cycle" << std::endl;
 	//threads
-	while(true){
-		
-		sendReply(receiveRequest());
-		//process request 
-		
-		
-		
+	
+	{
+		bool isLogged = false;
+		do {
+
+			
+			std::string reply = receiveRequest();
+			std::cout << "To Reply" << reply << std::endl;
+			//if (reply [0] ==)
+			if (reply!= "0") sendReply(reply);
+		//	if (reply == "0Yes" || reply == "2Added") isLogged = true;   //Hardcode? fix
+
+			
+
+
+		} while (!isLogged);
+
+		std::cout << "Logged" << std::endl;
+	//	while (true) {			sendReply(receiveRequest());		}
 	}
+
 	
 }
 

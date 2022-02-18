@@ -12,6 +12,7 @@
 #include <string>
 #include <thread>
 #include <utility>
+#include <set>
 
 //#include "RequestType.h"
 #include "RequestManager.h"
@@ -35,6 +36,7 @@ class NetCore
 
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ConnectSocket = INVALID_SOCKET;
+	std::set <SOCKET> connectedSockets;
 
 
 

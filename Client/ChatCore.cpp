@@ -24,9 +24,9 @@ void ChatCore::sendMessage() {
 	string message;
 	while (true) {
 		
-		//cin >> message; //? getline
-		getline(cin, message);
-		requestManager->makeRequest(sendingMessage, message);
+		cin >> message; //? getline
+		//getline(cin, message);
+		//requestManager->makeRequest(sendingMessage, message);
 
 	}
 	
@@ -39,13 +39,16 @@ bool ChatCore::runChatCore()
 	cout << "entering the chat...\n";
 	//threads 
 
-	thread first(&ChatCore::updateChat, this);
+	//thread first(&ChatCore::updateChat, this);
 	//thread second(&ChatCore::sendMessage);
-
+	
+	cout << "Before Sending" << endl;
+	//char ch;
+	//cin >> ch;
 	sendMessage();
 	
 	
-	first.join();
+	//first.join();
 	//second.join();
 	//
 	return true;

@@ -14,11 +14,29 @@ bool ChatHistory::getHistory()
 
 		return true;
 	}
+
 	return false;
 }
 
 void ChatHistory::saveHistory()
 {
+	ofstream chatHistoryFile;
+	chatHistoryFile.open(chatHistoryPath, ostream::app);
+	char* temp;
+	if (chatHistoryFile.is_open()) {
+		for (list<std::string>::iterator it = messages.begin(); it != messages.end(); it++) {
+		
+			temp = new char[(*it).length() + 1];
+			strcpy_s(temp, (*it).length() + 1, (*it).c_str());
+			chatHistoryFile << temp; //+nickname
+
+			delete[] temp;
+		}
+		
+	}
+	
+	
+
 }
 
 ChatHistory::ChatHistory()
@@ -35,10 +53,10 @@ ChatHistory::~ChatHistory()
 {
 }
 
-void ChatHistory::addMessage(std::string nickName)
+void ChatHistory::addMessage(std::string nickName, std::string message)
 {
 	//add message
-	messages.push_back(nickName);
+	messages.push_back(nickName+": "+ message);
 	if (capacityCount < CAPACITY) { capacityCount++; }
 	else { messages.pop_front(); }
 	saveCount++;

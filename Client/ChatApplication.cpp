@@ -19,6 +19,7 @@
 				delete mainMenu;
 				mainMenu = nullptr;
 				//runCore
+				chatCore = new ChatCore(requestManager);
 			
 			}
 			
