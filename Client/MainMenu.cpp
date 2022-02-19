@@ -40,8 +40,7 @@ bool MainMenu::showMenu(){
 		
 	//if (false) return false;
 	std::cout << "menu Ends \n";
-	char ch;
-	std::cin >> ch;
+
 	return true;
 	
 }

@@ -22,15 +22,17 @@ void ChatCore::updateChat() {
 void ChatCore::sendMessage() {
 	
 	string message;
+	
 	while (true) {
 		
-		cin >> message; //? getline
-		//getline(cin, message);
-		//requestManager->makeRequest(sendingMessage, message);
+	
+		getline(cin, message);
+
+		requestManager->makeRequest(sendingMessage, message); //
 
 	}
 	
-
+	
 }
 
 
@@ -46,7 +48,7 @@ bool ChatCore::runChatCore()
 	//char ch;
 	//cin >> ch;
 	sendMessage();
-	
+	updateChat();
 	
 	//first.join();
 	//second.join();

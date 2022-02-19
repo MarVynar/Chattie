@@ -3,10 +3,7 @@
 
 NetCore::NetCore(IServerCore* serverCore)
 {
-	///////
-	//char chl;
-	//std::cin >> chl;
-	/////
+
 	this->serverCore = serverCore ;
 	requestManager = new RequestManager(serverCore);
  runAsServer(); 
@@ -122,7 +119,7 @@ int NetCore::sendReply(std::string requestText)
 
 
 
-//char NetCore::receiveReply()
+
 std::string  NetCore::receiveRequest()
 {
 	iResult = recv(ConnectSocket, recvbuf, recvbuflen + 1, 0);
@@ -130,8 +127,7 @@ std::string  NetCore::receiveRequest()
 	std::cout << "RecvBuf" << recvbuf << "!" << std::endl;
 	
 	return requestManager->processReceivedRequest((recvbuf));
-	//return recvbuf[0];
-	//return recvbuf;
+
 }
 
 void NetCore::serverCycle(){
@@ -156,7 +152,7 @@ void NetCore::serverCycle(){
 		} while (!isLogged);
 
 		std::cout << "Logged" << std::endl;
-	//	while (true) {			sendReply(receiveRequest());		}
+		while (true) {			sendReply(receiveRequest());		}
 	}
 
 	

@@ -9,11 +9,12 @@ void ProfileDatabase::addProfile(std::string nickName){
 	ofstream dataFile;
 	//dataFile.open(profileDatabasePath, ofstream::app);
 	dataFile.open(profileDatabasePath, ofstream::app);
-	
+	cout << "Adding " << nickName.c_str() << " to list\n";
 	if(dataFile.is_open()){
 		//profiles.push_back(nickName);
 					
 			char* temp = new char[(nickName).length() + 1];
+			
 			//strcpy(temp, (nickName).c_str());
 			strcpy_s(temp, (nickName).length()+1, (nickName).c_str()); //+1?
 			dataFile << temp << '\n';
@@ -38,28 +39,36 @@ bool ProfileDatabase::findProfile(std::string nickName){
 
 	dataFile.open(profileDatabasePath);
 
-	//cout << "Looking for " << nickName << endl;
-	printf("Looking for  %s", nickName);
+	cout << "Looking for " << nickName.c_str() << endl;
+
 	
 	if(dataFile.is_open()){
 	
 		//dataFile.read((char*)this, sizeof(ProfileDatabase)); 
-		/*(char ch;
+		//*(
+
+		char ch;
+		string temp;
 		while (dataFile.get(ch)) {
 
-			string temp;
-			while (ch != '\n') {
+			
+			if (ch != '\n') {
 				temp += ch;
 				
 			}
-			printf("Temp %s", temp);
-			//cout << "Temp "<< temp << endl;
-			//cout<<temp<<endl; //
-			if (temp == nickName) return true;
+			else {
+
+			
+				if (temp == nickName) return true;
+				else { temp.clear(); }
+			}
+
+			
 
 		}
-		return false;*/
-		return true;
+		cout << "Not found\n";
+		return false;//*/
+		//return true;
 	}
 	else{
 		
@@ -69,5 +78,5 @@ bool ProfileDatabase::findProfile(std::string nickName){
 	
 	dataFile.close();
 	
-	return true;
+	//return true;
 }

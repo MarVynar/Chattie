@@ -30,19 +30,19 @@ void RequestManager::sendReply(requestType type, std::string requestText){
 std::string RequestManager::processReceivedRequest(std::string replyText){
 
 	std::string request = replyText.substr(1);
-	std::cout << "Processing replies " << replyText[0] << " " << request << "ReplyText: "<< replyText << std::endl;
+	
 	std::string result;
 	switch ((requestType) (replyText[0]-48)) {
 		bool found;
 	case nicknameChecking: 
 		
 		found = serverCore->checkNickName(request);
-		std::cout << "Found = " << found << std::endl;
+		
 		result = replyText[0];
 		if (found) result += "Yes";
 		else result += "No";
 		//result = (replyText[0] + (serverCore->checkNickName(request)) ? "Yes" : "No");
-		std::cout << "Checked Nickname" << result << std::endl;
+		
 		return result;
 		//return (replyText[0] +(serverCore->checkNickName(request)) ? "Yes" : "No");
 		

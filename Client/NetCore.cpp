@@ -9,6 +9,7 @@ NetCore::NetCore()
 
 NetCore::~NetCore()
 {
+	std::cout << "Deleting Netcore\n";
 	closesocket(ConnectSocket);
 	closesocket(ListenSocket);
 	WSACleanup();
@@ -94,9 +95,7 @@ int NetCore::sendRequest(requestType rType, std::string requestText)
 
 	if (iSendResult != SOCKET_ERROR) {
 
-		/*char* replyMessage = new char[2];
-		replyMessage[0] = reply;
-		replyMessage[1] = '\0';*/
+		
 		///
 		std::string reply = std::to_string((int)(rType))+ requestText;
 		std::cout << reply<<std::endl;

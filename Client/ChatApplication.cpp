@@ -2,11 +2,11 @@
 
 		ChatApplication::ChatApplication(){
 							
-			////
+			
 			requestManager = new RequestManager();
 			mainMenu = new MainMenu(requestManager);
 			
-			/////
+			
 			run();	
 			
 			
@@ -31,11 +31,12 @@
 		
 		
 		
-		////////////
+		
 		
 		ChatApplication::~ChatApplication(){
 			
 		
-			delete mainMenu ;
+			
+			delete requestManager;
 			
 		}

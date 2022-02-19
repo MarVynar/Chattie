@@ -3,6 +3,8 @@
 
 #include "RequestManager.h"
 
+#define MAX_MESSAGE_SIZE 50
+
 class IChatCore
 {
 
