@@ -1,6 +1,30 @@
 #include "NetCore.h"
 
 
+int NetCore::listenChosenSocket(SOCKET socketToListen)
+{
+	SOCKET connectSocket = accept(socketToListen, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
+	if (ConnectSocket == INVALID_SOCKET) {
+		printf("accept failed with error: %d\n", WSAGetLastError());
+		closesocket(ListenSocket);
+		WSACleanup();
+		return 1;
+	}
+
+
+	int iSendResult = 0;
+
+	//serverCycle();
+}
+
+void NetCore::sendChatHistoryToAll()
+{
+	for each (auto it in connectedSockets)
+	{
+
+	}
+}
+
 NetCore::NetCore(IServerCore* serverCore)
 {
 
@@ -65,7 +89,7 @@ int NetCore::runAsServer()
 
 	freeaddrinfo(result);
 
-	iResult = listen(ListenSocket, SOMAXCONN);
+	iResult = listen(ListenSocket, SOMAXCONN); //Max connects
 	if (iResult == SOCKET_ERROR) {
 		printf("listen failed with error: %d\n", WSAGetLastError());
 		closesocket(ListenSocket);
@@ -74,7 +98,7 @@ int NetCore::runAsServer()
 	}
 
 
-	ConnectSocket = accept(ListenSocket, NULL, NULL);
+	ConnectSocket = accept(ListenSocket, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
 	if (ConnectSocket == INVALID_SOCKET) {
 		printf("accept failed with error: %d\n", WSAGetLastError());
 		closesocket(ListenSocket);

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 
+
 using namespace std;
 
 void ProfileDatabase::addProfile(std::string nickName){

@@ -54,6 +54,10 @@ class NetCore
 	IRequestManager* requestManager;
 	IServerCore* serverCore;
 
+
+	int listenChosenSocket(SOCKET socketToListen);
+	void sendChatHistoryToAll();
+
 public:
 	NetCore(IServerCore* serverCore);
 	~NetCore();
