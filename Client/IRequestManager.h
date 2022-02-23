@@ -19,6 +19,7 @@ class IRequestManager
 		virtual bool makeRequest(requestType type, std::string requestText ) =0;
 		
 		virtual bool processReply( std::string replyText)=0;
+		virtual std::string getReply() = 0;
 
 	protected:	
 

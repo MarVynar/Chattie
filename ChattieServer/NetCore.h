@@ -12,7 +12,7 @@
 #include <string>
 #include <thread>
 #include <utility>
-#include <set>
+#include <map>
 
 //#include "RequestType.h"
 #include "RequestManager.h"
@@ -26,23 +26,24 @@
 
 #define DEFAULT_BUFLEN 30
 #define DEFAULT_PORT "27015"
+#define MAX_CONNECTIONS SOMAXCONN
 //#define DEFAULT_PORT "4876"
 
 
 class NetCore
 {
-	WSADATA wsaData;
-	int iResult;
+	 WSADATA wsaData;
+	 int iResult;
 
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ConnectSocket = INVALID_SOCKET;
-	std::set <SOCKET> connectedSockets;
-
+	 std::map <SOCKET, std::thread> connectedSockets;
+	 unsigned int currentConnections;
 
 
 	//char* recvbuf;
-	char recvbuf[DEFAULT_BUFLEN];
-	int recvbuflen = DEFAULT_BUFLEN;
+	 char recvbuf[DEFAULT_BUFLEN];
+	 const int recvbuflen = 30;
 
 	
 	struct addrinfo *result = NULL,
@@ -51,25 +52,29 @@ class NetCore
 	const char *sendbuf = "Go!";
 	
 
-	IRequestManager* requestManager;
+	 IRequestManager* requestManager;
 	IServerCore* serverCore;
 
 
 	int listenChosenSocket(SOCKET socketToListen);
-	void sendChatHistoryToAll();
+	void sendToAll(std::string message);
+	void sendToAllExcept(SOCKET socket, std::string message);
+	 void serveSocket(SOCKET socket);
+
+	int runAsServer();
+
+
+
+	//int sendReply(requestType rType, std::string requestText);
+	int sendReply(SOCKET socket, std::string requestText);
+
+	 std::string receiveRequest(SOCKET socket);
+
 
 public:
 	NetCore(IServerCore* serverCore);
 	~NetCore();
 
-	int runAsServer();
-
-	void serverCycle();
-
-	//int sendReply(requestType rType, std::string requestText);
-	int sendReply(std::string requestText);
-
-	std::string receiveRequest();
 
 
 };

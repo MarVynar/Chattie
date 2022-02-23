@@ -16,6 +16,7 @@ class ChatCore : public IChatCore
 
 		void updateChat() override;
 		void sendMessage() override ;
+		void getChathistory() override;
 		 ~ChatCore() override;
 	
 };

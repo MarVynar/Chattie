@@ -51,6 +51,11 @@ bool RequestManager::processReply( std::string replyText){
 
 }
 
+std::string RequestManager::getReply()
+{
+	return (netCore->receiveReply()).substr(1);
+}
+
 
 RequestManager::~RequestManager(){
 	

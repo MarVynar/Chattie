@@ -15,6 +15,7 @@ class RequestManager : public IRequestManager
 		bool makeRequest(requestType type, std::string requestText ) override;
 		
 		bool processReply( std::string replyText) override;
+		std::string getReply() override;
 
 };
 

@@ -6,16 +6,11 @@
 
 void ChatCore::updateChat() {
 
-	while(true) {
+	while (true) {
 
-		string messageHistory;
-		//requestManager->processReply(sendingMessage, messageHistory);
+		cout << requestManager->getReply() << endl;
 
-		if (system("CLS")) system("clear");
-		cout << messageHistory << endl;
 	}
-
-
 }
 
 
@@ -35,6 +30,16 @@ void ChatCore::sendMessage() {
 	
 }
 
+void ChatCore::getChathistory()
+{
+	string messageHistory;
+	//requestManager->processReply(sendingMessage, messageHistory);
+
+	if (system("CLS")) system("clear");
+	cout << messageHistory << endl;
+}
+
+
 
 bool ChatCore::runChatCore()
 {
@@ -43,13 +48,15 @@ bool ChatCore::runChatCore()
 
 	//thread first(&ChatCore::updateChat, this);
 	//thread second(&ChatCore::sendMessage);
+	thread tr1;
 	
 	cout << "Before Sending" << endl;
 	//char ch;
 	//cin >> ch;
 	sendMessage();
-	updateChat();
+	tr1 = thread(&ChatCore::updateChat, this);
 	
+	tr1.join();
 	//first.join();
 	//second.join();
 	//

@@ -17,17 +17,27 @@ int NetCore::listenChosenSocket(SOCKET socketToListen)
 	//serverCycle();
 }
 
-void NetCore::sendChatHistoryToAll()
+void NetCore::sendToAll(std::string message)
 {
-	for each (auto it in connectedSockets)
+	//for each (auto it in connectedSockets)
+	for (auto it = connectedSockets.begin(); it!= connectedSockets.end(); it++)
 	{
+		sendReply(it->first, message);
+	}
+}
 
+void NetCore::sendToAllExcept(SOCKET socket, std::string message)
+{
+
+	for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
+	{
+		if (it->first!= socket) sendReply(it->first, message);
 	}
 }
 
 NetCore::NetCore(IServerCore* serverCore)
 {
-
+	currentConnections = 0; //decrease on disconnect and delete from set
 	this->serverCore = serverCore ;
 	requestManager = new RequestManager(serverCore);
  runAsServer(); 
@@ -89,7 +99,7 @@ int NetCore::runAsServer()
 
 	freeaddrinfo(result);
 
-	iResult = listen(ListenSocket, SOMAXCONN); //Max connects
+	iResult = listen(ListenSocket, MAX_CONNECTIONS); //Max connects
 	if (iResult == SOCKET_ERROR) {
 		printf("listen failed with error: %d\n", WSAGetLastError());
 		closesocket(ListenSocket);
@@ -97,27 +107,49 @@ int NetCore::runAsServer()
 		return 1;
 	}
 
+	while (currentConnections< MAX_CONNECTIONS) {
 
-	ConnectSocket = accept(ListenSocket, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
-	if (ConnectSocket == INVALID_SOCKET) {
-		printf("accept failed with error: %d\n", WSAGetLastError());
-		closesocket(ListenSocket);
-		WSACleanup();
-		return 1;
+		
+		ConnectSocket = accept(ListenSocket, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
+		if (ConnectSocket == INVALID_SOCKET) {
+			printf("accept failed with error: %d\n", WSAGetLastError());
+			closesocket(ListenSocket);
+			WSACleanup();
+			return 1;
+		}
+
+
+		int iSendResult = 0;
+		
+		
+		
+		currentConnections++;
+		//serveSocket(*(connectedSockets.find(ConnectSocket)));
+		//CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)serveSocket, (LPVOID)(*(connectedSockets.find(ConnectSocket))), NULL, NULL);
+		//std::thread tr1(NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))));
+		//std::thread tr1(serveSocket(*(connectedSockets.find(ConnectSocket))));
+		//std::thread tr1 = std::thread(&NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))),this);
+		//std::thread tr1 = std::thread(&NetCore::serveSocket, this, *(connectedSockets.find(ConnectSocket)));
+		//std::thread tr1 = std::thread(&NetCore::serveSocket, this, (connectedSockets.find(ConnectSocket))->first);
+		std::thread tr1 = std::thread(&NetCore::serveSocket, this, ConnectSocket);
+		connectedSockets.emplace(ConnectSocket, tr1);
+
+
+
+		
 	}
 
-
-	int iSendResult = 0;
-
-	serverCycle();
-	
+	for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
+	{
+		it->second.join();
+	}
 	return 0;
 }
 
 
 
 //int NetCore::sendReply(requestType rType, std::string requestText)
-int NetCore::sendReply(std::string requestText)
+int NetCore::sendReply(SOCKET socket, std::string requestText)
 {
 	int iSendResult = 0;
 
@@ -129,12 +161,13 @@ int NetCore::sendReply(std::string requestText)
 		//std::string reply;
 		std::cout << "Reply Text" << requestText<< std::endl;
 		std::cout << "Sending reply " << requestText.c_str() << "." << std::endl;
-		iSendResult = send(ConnectSocket, requestText.c_str(), requestText.length()+1, 0);
+		iSendResult = send(socket, requestText.c_str(), requestText.length()+1, 0);
 
 		if (iSendResult == SOCKET_ERROR) {
 			printf("send failed with error: %d\n", WSAGetLastError());
-			closesocket(ConnectSocket);
+			closesocket(socket);
 			WSACleanup();
+			//currentConnections--;
 			return 1;
 		}
 	
@@ -144,9 +177,9 @@ int NetCore::sendReply(std::string requestText)
 
 
 
-std::string  NetCore::receiveRequest()
+ std::string  NetCore::receiveRequest(SOCKET socket)
 {
-	iResult = recv(ConnectSocket, recvbuf, recvbuflen + 1, 0);
+	iResult = recv(socket, recvbuf, recvbuflen + 1, 0);
 
 	std::cout << "RecvBuf" << recvbuf << "!" << std::endl;
 	
@@ -154,7 +187,7 @@ std::string  NetCore::receiveRequest()
 
 }
 
-void NetCore::serverCycle(){
+void NetCore::serveSocket(SOCKET socket){
 	
 	std::cout << "Runninf Cycle" << std::endl;
 	//threads
@@ -164,10 +197,10 @@ void NetCore::serverCycle(){
 		do {
 
 			
-			std::string reply = receiveRequest();
+			std::string reply = receiveRequest(socket);
 			std::cout << "To Reply" << reply << std::endl;
 			//if (reply [0] ==)
-			if (reply!= "0") sendReply(reply);
+			if (reply!= "0") sendReply(socket, reply);
 		//	if (reply == "0Yes" || reply == "2Added") isLogged = true;   //Hardcode? fix
 
 			
@@ -176,7 +209,13 @@ void NetCore::serverCycle(){
 		} while (!isLogged);
 
 		std::cout << "Logged" << std::endl;
-		while (true) {			sendReply(receiveRequest());		}
+		while (true) {	
+			//	sendReply(socket, receiveRequest(socket));	
+			//serverCore->addMessage(receiveRequest(socket));
+			std::string message = receiveRequest(socket);
+			serverCore->addMessage(message);
+			sendToAllExcept(socket, message);
+		}
 	}
 
 	

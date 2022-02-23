@@ -16,6 +16,7 @@ class IChatCore
 		IChatCore(IRequestManager* requestManager);
 		
 		virtual void updateChat() =0;
+		virtual void getChathistory() = 0;
 		virtual void sendMessage() =0;
 		virtual ~IChatCore();
 	protected:
