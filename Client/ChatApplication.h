@@ -15,6 +15,9 @@ class ChatApplication
 	IAppMenu* mainMenu;
 	IChatCore* chatCore;
 	void run();
+
+	//string profileNickName;
+
 	public:
 		ChatApplication();
 		~ChatApplication();

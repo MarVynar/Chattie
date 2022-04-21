@@ -1,4 +1,5 @@
 #include "NetCore.h"
+#include <Windows.h>
 
 
 NetCore::NetCore()
@@ -41,26 +42,40 @@ int NetCore::runAsClient()
 
 
 	for (ptr = result; ptr != NULL; ptr = ptr->ai_next) {
-
-
+		
+		do
+		{
 		ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
 			ptr->ai_protocol);
-		if (ConnectSocket == INVALID_SOCKET) {
-			printf("socket failed with error: %ld\n", WSAGetLastError());
-			WSACleanup();
-			return 1;
-		}
+		std::cout << ConnectSocket << std::endl;
+			if (ConnectSocket == INVALID_SOCKET) {
+				printf("socket failed with error: %ld\n", WSAGetLastError());
+				WSACleanup();
+				return 1;
+			}
 
-		
-		iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-		if (iResult == SOCKET_ERROR) {
-			closesocket(ConnectSocket);
-			ConnectSocket = INVALID_SOCKET;
-			continue;
-		}
+		////do
+		////{
+
+			iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+			if (iResult == SOCKET_ERROR) {
+				closesocket(ConnectSocket);
+				ConnectSocket = INVALID_SOCKET;
+				printf("Unable to connect to server!\n");
+				WSACleanup();
+				Sleep(5000);
+				continue;
+			}
+			//else { ConnectSocket = 188; }
+			std::cout << ConnectSocket << std::endl;
+		} while (ConnectSocket == INVALID_SOCKET);
+		////} while (iResult == SOCKET_ERROR);//
+
+
 		break;
 	}
 
+	//std::cout << ConnectSocket << std::endl;
 	freeaddrinfo(result);
 
 	if (ConnectSocket == INVALID_SOCKET) {
@@ -68,6 +83,8 @@ int NetCore::runAsClient()
 		WSACleanup();
 		return 1;
 	}
+
+	
 
 
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf) + 1, 0);

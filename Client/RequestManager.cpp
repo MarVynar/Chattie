@@ -1,6 +1,7 @@
 #include "RequestManager.h"
 
 
+
 bool RequestManager::makeRequest(requestType type, std::string requestText ){
 
 std::string requestToSend;
@@ -27,29 +28,17 @@ void RequestManager::sendRequest(requestType type, std::string requestText){
 
 }
 
+RequestManager::RequestManager() :IRequestManager()
+{
+	requestProcessor = new RequestProcessor();
+}
+
 
 bool RequestManager::processReply( std::string replyText){
 
-	//switch (type) {
-	//std::string request = replyText.substr(1);
-
-	switch ((requestType)(replyText[0] - 48)) {
-			
-	case nicknameChecking: 
-		return (replyText == "0Yes") ? true : false;  // fix Hardcode
-		//return false;
-		break;
-			case  sendingMessage:
-				break;
-			
-			default : break;
-		
-		
-		}
-
-	return true; 
-
+	return requestProcessor->processReply(replyText);
 }
+
 
 std::string RequestManager::getReply()
 {
@@ -59,5 +48,5 @@ std::string RequestManager::getReply()
 
 RequestManager::~RequestManager(){
 	
-	
+	delete requestProcessor;
 }

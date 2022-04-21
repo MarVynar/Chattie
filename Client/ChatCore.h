@@ -9,6 +9,7 @@ using namespace std;
 class ChatCore : public IChatCore
 {
 	bool runChatCore() override; 
+	//string profileNickName;
 
 	public:
 		

@@ -115,12 +115,14 @@
     <ClCompile Include="IAppMenu.cpp" />
     <ClCompile Include="IChatCore.cpp" />
     <ClCompile Include="IRequestManager.cpp" />
+    <ClCompile Include="IRequestProcessor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="NetCore.cpp" />
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="ProfileDatabase.cpp" />
     <ClCompile Include="RequestManager.cpp" />
+    <ClCompile Include="RequestProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChatApplication.h" />
@@ -128,11 +130,13 @@
     <ClInclude Include="IAppMenu.h" />
     <ClInclude Include="IChatCore.h" />
     <ClInclude Include="IRequestManager.h" />
+    <ClInclude Include="IRequestProcessor.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="NetCore.h" />
     <ClInclude Include="Profile.h" />
     <ClInclude Include="ProfileDatabase.h" />
     <ClInclude Include="RequestManager.h" />
+    <ClInclude Include="RequestProcessor.h" />
     <ClInclude Include="RequestType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

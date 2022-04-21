@@ -2,13 +2,16 @@
 #define REQUESTMANAGER_H
 
 #include "IRequestManager.h"
+#include "RequestProcessor.h"
 
 class RequestManager : public IRequestManager
 {
 
+	RequestProcessor * requestProcessor;
+
 	void sendRequest(requestType type, std::string requestText) override;
 	public:
-		
+		RequestManager();
 		
 		~RequestManager();
 		
