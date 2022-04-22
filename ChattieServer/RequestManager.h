@@ -2,9 +2,12 @@
 #define REQUESTMANAGER_H
 
 #include "IRequestManager.h"
+#include "RequestProcessor.h"
 
 class RequestManager : public IRequestManager
 {
+	RequestProcessor* requestProcessor;
+
 	public:
 		
 		RequestManager(IServerCore* serverCore);

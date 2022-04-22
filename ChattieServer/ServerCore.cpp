@@ -31,7 +31,7 @@ void ServerCore::loadChatHistory(){
 }
 void ServerCore::addMessage(std::string message){
 	
-	
+	//chatHistory->addMessage(message);
 }
 
 

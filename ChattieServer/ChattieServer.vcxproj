@@ -112,11 +112,13 @@
   <ItemGroup>
     <ClInclude Include="ChatHistory.h" />
     <ClInclude Include="IRequestManager.h" />
+    <ClInclude Include="IRequestProcessor.h" />
     <ClInclude Include="IServerCore.h" />
     <ClInclude Include="NetCore.h" />
     <ClInclude Include="Profile.h" />
     <ClInclude Include="ProfileDatabase.h" />
     <ClInclude Include="RequestManager.h" />
+    <ClInclude Include="RequestProcessor.h" />
     <ClInclude Include="RequestType.h" />
     <ClInclude Include="ServerApplication.h" />
     <ClInclude Include="ServerCore.h" />
@@ -124,12 +126,14 @@
   <ItemGroup>
     <ClCompile Include="ChatHistory.cpp" />
     <ClCompile Include="IRequestManager.cpp" />
+    <ClCompile Include="IRequestProcessor.cpp" />
     <ClCompile Include="IServerCore.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetCore.cpp" />
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="ProfileDatabase.cpp" />
     <ClCompile Include="RequestManager.cpp" />
+    <ClCompile Include="RequestProcessor.cpp" />
     <ClCompile Include="ServerApplication.cpp" />
     <ClCompile Include="ServerCore.cpp" />
   </ItemGroup>
