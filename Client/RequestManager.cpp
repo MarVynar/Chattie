@@ -14,10 +14,10 @@ std::string requestToSend;
 //
 //
 //}
-std::cout << "request text " << requestText << std::endl; // to delete reqToSend
+//std::cout << "request text " << requestText << std::endl; // to delete reqToSend
 requestToSend = requestText;
 sendRequest(type, requestToSend);
-std::cout << "request sent\n ";
+//std::cout << "request sent\n ";
 if (type == nicknameChecking) return processReply(netCore->receiveReply()); //waiting for needed reply
 else { return true; }
 }

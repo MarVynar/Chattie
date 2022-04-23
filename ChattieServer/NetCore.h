@@ -26,7 +26,7 @@
 
 #define DEFAULT_BUFLEN 30
 #define DEFAULT_PORT "27015"
-#define MAX_CONNECTIONS SOMAXCONN
+#define MAX_CONNECTIONS 5 //SOMAXCONN
 //#define DEFAULT_PORT "4876"
 
 
@@ -37,7 +37,8 @@ class NetCore
 
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ConnectSocket = INVALID_SOCKET;
-	 std::map <SOCKET, std::thread> connectedSockets;
+	// std::map <SOCKET, std::thread> connectedSockets;
+	std::vector<SOCKET>connectedSockets;
 	 unsigned int currentConnections;
 
 
@@ -70,6 +71,8 @@ class NetCore
 
 	 std::string receiveRequest(SOCKET socket);
 
+	 
+	 std::vector<std::thread > threads;
 
 public:
 	NetCore(IServerCore* serverCore);

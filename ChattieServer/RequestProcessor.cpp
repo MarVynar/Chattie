@@ -1,6 +1,7 @@
 #include "RequestProcessor.h"
 #include "RequestType.h"
 
+#include <iostream>
 
 RequestProcessor::RequestProcessor()
 {
@@ -14,7 +15,7 @@ RequestProcessor::~RequestProcessor()
 std::string RequestProcessor::processReceivedRequest(std::string replyText, IServerCore* serverCore)
 {
 	std::string request = replyText.substr(1);
-
+	std::cout << "Processing received request: "<<replyText<<" - " << request << std::endl;
 	std::string result;
 	switch ((requestType)(replyText[0] - 48)) {
 		bool found;

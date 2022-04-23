@@ -22,16 +22,26 @@ void NetCore::sendToAll(std::string message)
 	//for each (auto it in connectedSockets)
 	for (auto it = connectedSockets.begin(); it!= connectedSockets.end(); it++)
 	{
-		sendReply(it->first, message);
+	//	sendReply(it->first, message);
 	}
 }
 
 void NetCore::sendToAllExcept(SOCKET socket, std::string message)
 {
 
-	for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
-	{
-		if (it->first!= socket) sendReply(it->first, message);
+	//for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
+	//{
+	//	if (it->first!= socket) sendReply(it->first, message);
+	//}
+	/*for (auto it = connectedSockets.begin(); it != connectedSockets.end; it++) {
+
+		sendReply(*it, message);
+	}*/
+
+	std::cout << "To Send " << message << std::endl;
+	for (int it = 0; it < connectedSockets.size(); it++) {
+
+		sendReply(connectedSockets[it], message);
 	}
 }
 
@@ -78,72 +88,101 @@ int NetCore::runAsServer()
 		return 1;
 	}
 
-
-	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-	if (ListenSocket == INVALID_SOCKET) {
-		printf("socket failed with error: %ld\n", WSAGetLastError());
-		freeaddrinfo(result);
-		WSACleanup();
-		return 1;
-	}
-
-
-	iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
-	if (iResult == SOCKET_ERROR) {
-		printf("bind failed with error: %d\n", WSAGetLastError());
-		freeaddrinfo(result);
-		closesocket(ListenSocket);
-		WSACleanup();
-		return 1;
-	}
-
-	freeaddrinfo(result);
-
-	iResult = listen(ListenSocket, MAX_CONNECTIONS); //Max connects
-	if (iResult == SOCKET_ERROR) {
-		printf("listen failed with error: %d\n", WSAGetLastError());
-		closesocket(ListenSocket);
-		WSACleanup();
-		return 1;
-	}
-
-	while (currentConnections< MAX_CONNECTIONS) {
-
-		
-		ConnectSocket = accept(ListenSocket, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
-		if (ConnectSocket == INVALID_SOCKET) {
-			printf("accept failed with error: %d\n", WSAGetLastError());
-			closesocket(ListenSocket);
+	///////
+	//do{ //10044
+	//while (currentConnections < MAX_CONNECTIONS) {
+		ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+		if (ListenSocket == INVALID_SOCKET) {
+			printf("socket failed with error: %ld\n", WSAGetLastError());
+			freeaddrinfo(result);
 			WSACleanup();
-			return 1;
+			//return 1;
+			//continue;
 		}
 
+		else
+		{
+			//do{ //10022
+			printf("sock n go");
+			SOCKET tempSocket = ListenSocket;
 
-		int iSendResult = 0;
+			iResult = bind(tempSocket, result->ai_addr, (int)result->ai_addrlen);
+			if (iResult == SOCKET_ERROR) {
+				printf("bind failed with error: %d\n", WSAGetLastError());
+				freeaddrinfo(result);
+				closesocket(ListenSocket);
+				WSACleanup();
+				//return 1;
+				//continue;
+			}
+
+			freeaddrinfo(result);
+			do { //
+			iResult = listen(tempSocket, MAX_CONNECTIONS); //Max connects
+			if (iResult == SOCKET_ERROR) {
+				printf("listen failed with error: %d\n", WSAGetLastError());
+				closesocket(tempSocket);
+				WSACleanup();
+				//return 1;
+				continue;
+			}
+
+			//while (currentConnections< MAX_CONNECTIONS) {
+
+
+			ConnectSocket = accept(tempSocket, NULL, NULL); // to threads ConnectSocket = accept(ListenSocket, (SOCKADDR*)&addr, NULL);
+			if (ConnectSocket == INVALID_SOCKET) {
+				printf("accept failed with error: %d\n", WSAGetLastError());
+				closesocket(tempSocket);
+				WSACleanup();
+				//return 1;
+				continue;
+			}
+
+
+			int iSendResult = 0;
+
+
+
+			currentConnections++;
+			connectedSockets.push_back(ConnectSocket);
+			std::cout << "Connections " << connectedSockets.size() << std::endl;
+			//serveSocket(*(connectedSockets.find(ConnectSocket)));
+			//serveSocket(ConnectSocket); ///gggg
+			//CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)serveSocket, (LPVOID)(*(connectedSockets.find(ConnectSocket))), NULL, NULL);
+			//std::thread tr1(NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))));
+			//std::thread tr1(serveSocket(*(connectedSockets.find(ConnectSocket))));
+			//std::thread tr1 = std::thread(&NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))),this);
+			//std::thread tr1 = std::thread(&NetCore::serveSocket, this, *(connectedSockets.find(ConnectSocket)));
+			//std::thread tr1 = std::thread(&NetCore::serveSocket, this, (connectedSockets.find(ConnectSocket))->first);
+			//std::thread tr1 = std::thread(&NetCore::serveSocket, this, ConnectSocket);///
+			//std::thread tr1 = std::thread(&NetCore::testfunc, this);
+			//connectedSockets.emplace(ConnectSocket, tr1);////
+			
+			//testThread = std::thread(&NetCore::testfunc, this);
+			//testThread = 
+			threads.push_back( std::thread(&NetCore::serveSocket, this, ConnectSocket));
+			//std::cout << "Thr addded\n";
+			//sendReply(connectedSockets[0], "TesttestTest");
+		/*	for (int it = 0; it < connectedSockets.size(); it++) {
+
+				sendReply(connectedSockets[it], "TesttestTest");
+			}*/
+			//serveSocket(ConnectSocket);
+			
+			} while (currentConnections < MAX_CONNECTIONS);
+		}
+
+	//} while  (currentConnections < MAX_CONNECTIONS);
+		//for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
+		for (auto it = threads.begin(); it != threads.end(); it++)
+		{
+			std::cout << "Join\n";
+			//it->second.join(); 
+			it->join();
+		}
 		
-		
-		
-		currentConnections++;
-		//serveSocket(*(connectedSockets.find(ConnectSocket)));
-		serveSocket(ConnectSocket);
-		//CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)serveSocket, (LPVOID)(*(connectedSockets.find(ConnectSocket))), NULL, NULL);
-		//std::thread tr1(NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))));
-		//std::thread tr1(serveSocket(*(connectedSockets.find(ConnectSocket))));
-		//std::thread tr1 = std::thread(&NetCore::serveSocket(*(connectedSockets.find(ConnectSocket))),this);
-		//std::thread tr1 = std::thread(&NetCore::serveSocket, this, *(connectedSockets.find(ConnectSocket)));
-		//std::thread tr1 = std::thread(&NetCore::serveSocket, this, (connectedSockets.find(ConnectSocket))->first);
-		//std::thread tr1 = std::thread(&NetCore::serveSocket, this, ConnectSocket);///
-		////connectedSockets.emplace(ConnectSocket, tr1);////
-
-
-
-		
-	}
-
-	for (auto it = connectedSockets.begin(); it != connectedSockets.end(); it++)
-	{
-		it->second.join();
-	}
+		//testThread.join();
 	return 0;
 }
 
@@ -187,6 +226,8 @@ int NetCore::sendReply(SOCKET socket, std::string requestText)
 	return requestManager->processReceivedRequest((recvbuf));
 
 }
+
+
 
 void NetCore::serveSocket(SOCKET socket){
 	

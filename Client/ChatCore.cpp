@@ -8,7 +8,7 @@ void ChatCore::updateChat() {
 
 	while (true) {
 
-		cout << requestManager->getReply() << endl;
+		cout <<"...:" <<requestManager->getReply() << endl;
 
 	}
 }
@@ -50,12 +50,12 @@ bool ChatCore::runChatCore()
 	//thread second(&ChatCore::sendMessage);
 	thread tr1;
 	
-	cout << "Before Sending" << endl;
+	//cout << "Before Sending" << endl;
 	//char ch;
 	//cin >> ch;
-	sendMessage();
+	//sendMessage();
 	tr1 = thread(&ChatCore::updateChat, this);
-	
+	sendMessage();
 	tr1.join();
 	//first.join();
 	//second.join();

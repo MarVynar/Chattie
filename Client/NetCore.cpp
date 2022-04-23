@@ -45,30 +45,34 @@ int NetCore::runAsClient()
 		
 		do
 		{
-		ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
-			ptr->ai_protocol);
-		std::cout << ConnectSocket << std::endl;
-			if (ConnectSocket == INVALID_SOCKET) {
-				printf("socket failed with error: %ld\n", WSAGetLastError());
-				WSACleanup();
-				return 1;
-			}
+			//do
+			//{
+				ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
+					ptr->ai_protocol);
+				std::cout << ConnectSocket << std::endl;
+				if (ConnectSocket == INVALID_SOCKET) {
+					printf("socket failed with error: %ld\n", WSAGetLastError());
+					WSACleanup();
+					//return 1;
+				}
+		//	} while (ConnectSocket == INVALID_SOCKET);
+			//do
+		//	{
 
-		////do
-		////{
+				iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+				if (iResult == SOCKET_ERROR) {
+					closesocket(ConnectSocket);
+					ConnectSocket = INVALID_SOCKET;
+					printf("Unable to connect to server!\n");
+					WSACleanup();
+					Sleep(5000);
+					continue;
+				}
+				//else { ConnectSocket = 188; }
+				std::cout << ConnectSocket << std::endl;
 
-			iResult = connect(ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-			if (iResult == SOCKET_ERROR) {
-				closesocket(ConnectSocket);
-				ConnectSocket = INVALID_SOCKET;
-				printf("Unable to connect to server!\n");
-				WSACleanup();
-				Sleep(5000);
-				continue;
-			}
-			//else { ConnectSocket = 188; }
-			std::cout << ConnectSocket << std::endl;
-		} while (ConnectSocket == INVALID_SOCKET);
+			//} while (iResult == SOCKET_ERROR);
+		} while ( (ConnectSocket == INVALID_SOCKET) && (iResult == SOCKET_ERROR)) ;
 		////} while (iResult == SOCKET_ERROR);//
 
 
@@ -79,7 +83,7 @@ int NetCore::runAsClient()
 	freeaddrinfo(result);
 
 	if (ConnectSocket == INVALID_SOCKET) {
-		printf("Unable to connect to server!\n");
+		printf("Unable to connect to the server!\n");
 		WSACleanup();
 		return 1;
 	}
@@ -89,7 +93,7 @@ int NetCore::runAsClient()
 
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf) + 1, 0);
 	if (iResult == SOCKET_ERROR) {
-		printf("send failed with error: %d\n", WSAGetLastError());
+		printf("Sending failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
@@ -115,9 +119,9 @@ int NetCore::sendRequest(requestType rType, std::string requestText)
 		
 		///
 		std::string reply = std::to_string((int)(rType))+ requestText;
-		std::cout << reply<<std::endl;
+		//std::cout << reply<<std::endl;
 		/////
-		std::cout << "Sending reply " <<reply.c_str() << "." << std::endl;
+		//std::cout << "Sending reply " <<reply.c_str() << "." << std::endl;
 		iSendResult = send(ConnectSocket, reply.c_str(), reply.length()+1, 0);
 
 		if (iSendResult == SOCKET_ERROR) {
@@ -135,7 +139,7 @@ std::string  NetCore::receiveReply()
 {
 	iResult = recv(ConnectSocket, recvbuf, recvbuflen + 1, 0);
 
-	std::cout << "RecvBuf" << recvbuf << "!" << std::endl;
+	//std::cout << "RecvBuf" << recvbuf << "!" << std::endl;
 	//return recvbuf[0];
 	return recvbuf;
 }
